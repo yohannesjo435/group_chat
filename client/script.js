@@ -3,7 +3,7 @@ const messageInput = document.getElementById("message-input")
 const roomInput = document.getElementById("room-input")
 const form = document.getElementById("form")
 
-const socket = io("http://localhost:3000")
+const socket = io("https://groupchat-production-b243.up.railway.app/")
 socket.on("connect", ()=> {
   displayMessage(`You connected with id: ${socket.id}`)
 })
