@@ -8,7 +8,7 @@ const messageInput = document.getElementById("message-input")
 const searchForm = document.getElementById("searchForm")
 
 // const socket = io("https://groupchat-production-b243.up.railway.app/")
-const socket = io("https://groupchat-production-5c4f.up.railway.app/")
+const socket = io("https://group-chat-02yw.onrender.com")
 // const socket = io("http://localhost:3000")
 
 //when user connects
