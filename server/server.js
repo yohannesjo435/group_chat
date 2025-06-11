@@ -1,6 +1,6 @@
-const {instrument} = require("@socket.io/admin-ui")
 const PORT = process.env.PORT || 3000
 
+const messageDb = []
 const io = require("socket.io")(PORT, {
   cors: {
     origin: "*",
@@ -10,17 +10,11 @@ const io = require("socket.io")(PORT, {
 
 io.on("connection", socket => {
   console.log(socket.id)
-  socket.on("send-message", (message, room) => {
-    if (room === ""){
-      socket.broadcast.emit("recieve-message", message)
-    }else {
-      socket.to(room).emit("recieve-message", message)
-    }
+  socket.emit("old-messages", messageDb)
+
+  socket.on("send-message", (message) => {
+    messageDb.push(message)
   })
-  socket.on("join-room", (room, cb) => {
-    socket.join(room)
-    cb(`Joined ${room}`)
-  })
+
 })
 
-instrument(io, {auth: false})
