@@ -8,6 +8,7 @@ const messageInput = document.getElementById("message-input")
 const searchForm = document.getElementById("searchForm")
 
 const socket = io("https://groupchat-production-b243.up.railway.app/")
+// const socket = io("http://localhost:3000")
 
 //when user connects
 // socket.on("connect", ()=> {
@@ -21,6 +22,8 @@ usernameForm.addEventListener("submit", e => {
 })
 
 socket.on("old-messages", (oldMessages)=> {
+  console.log("oldMessages", oldMessages.lengths)
+  console.log("oldMessages", oldMessages)
   oldMessages.forEach((msg)=> {
     displayMessage(msg)
   })
@@ -36,7 +39,7 @@ searchForm.addEventListener("submit", e => {
   const message = messageInput.value
 
   if (message === "") return
-  displayMessage({username, message})
+  // displayMessage({username, message})
   socket.emit(`send-message`, {username, message} )
 
   messageInput.value = ""
