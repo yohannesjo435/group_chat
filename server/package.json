@@ -4,9 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --watch server.js",
-    "startDev": "node --watch server.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
