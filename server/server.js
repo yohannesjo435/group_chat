@@ -14,6 +14,7 @@ io.on("connection", socket => {
 
   socket.on("send-message", (message) => {
     messageDb.push(message)
+    io.emit("recieve-message", message)
   })
 
 })
