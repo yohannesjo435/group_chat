@@ -4,92 +4,201 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat Interface</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      * {
+        font-family: "Montserrat", "Inter", cursive;
+      }
       body {
-        font-family: sans-serif;
-        margin: 20px auto;
+        margin: 30px auto;
         display: flex;
         justify-content: center;
         flex-direction: column;
-        align-items: center; /* To center the form horizontally */
+        align-items: center;
         height: 90vh;
         width: 90%;
-        max-width: 1200px;
-        box-sizing: border-box; /* Include padding/border in element's total width and height */
+        max-width: 500px;
+        box-sizing: border-box;
+        background-color: #1b202d;
+        color: white;
       }
 
       #message-container {
-        border: 1px solid black;
         flex-grow: 1; /* Allows it to take up available space */
         overflow-y: auto; /* Adds scroll if content overflows vertically */
-        width: 100%; /* Make it fill the available width of the body */
-        margin-bottom: 15px; /* Space between container and form */
-      }
-
-      #form {
+        width: 100%; 
         display: flex;
-        flex-wrap: wrap; /* Allows items to wrap to the next line */
-        justify-content: center; /* Center the form elements */
-        width: 100%; /* Take full width of the body's max-width */
-        gap: 10px; /* Space between form elements */
-        padding: 10px 0; /* Add some vertical padding */
+        flex-direction: column;
+        gap: 5px ;
+        padding: 15px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.048) 0px 0px 5px;
+      }
+      
+      #searchForm {
+        display: flex;
+        flex-wrap: wrap; 
+        justify-content: center;
+        width: calc(100% + 15px); 
+        box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
       }
 
-      #form label {
-        display: block; /* Ensures label takes its own line or allows flex to handle spacing */
-        margin-bottom: 5px; /* Space below labels */
-        width: 100%; /* Take full width to align labels above inputs */
-        text-align: left; /* Align label text */
-      }
-
-      #form input[type="text"] {
+      #searchForm input[type="text"] {
         flex-grow: 1; /* Allow input fields to grow */
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-
-      #form button {
-        padding: 8px 15px;
-        background-color: #007bff;
-        color: white;
         border: none;
         border-radius: 4px;
+        height: 46px;
+        padding: 0 10px;
+        color: white;
+        background-color: #3D4354;
+      }
+
+      #searchForm button {
+        padding: 8px 15px;
+        background-color: black;
+        transform: translateX(-2px);
+        color: white;
+        border: none;
         cursor: pointer;
       }
 
-      #form button:hover {
+      #searchForm button:hover {
         background-color: #0056b3;
       }
       /* Basic styling for messages if they were added dynamically */
       #message-container div {
-        background-color: #ccc;
-        padding: 5px;
-        margin-bottom: 5px; /* Space between messages */
+        padding: 10px 10px ;
+        max-width: 80%;
+        word-wrap: wrap;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;  
       }
 
-      #message-container div:nth-child(2n) {
-        background-color: #e0e0e0; /* Slightly different background for even messages */
+      .my-message {
+        width: max-content;
+        margin: 2px 2% 2px auto;
+        background-color: #7A8194;
+        text-align: right;
+        border-radius: 10px 0 10px 10px;
       }
+      .other-message {
+        width: max-content;
+        margin: 2px auto 2px 0;
+        background-color: #373E4E;
+        border-radius: 10px 0 10px 10px;
+        text-align: left;
+      }
+      #username-modal {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        background-color: #373e4e;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+      }
+      #username-modal input {
+        /* width: 100px; */
+        height: 40px;
+        background-color: #3d4354;
+        outline: none;
+        border: none;
+        color: white;
+        padding: 0 25px;
+        border-radius: 25px;
+      }
+
+      #username-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        /* width: 30%; */
+        min-width: 280px;
+        height: 150px;
+        padding: 2em;
+        border-radius: 8px;
+        background-color: #1b202d;
+      }
+
+      #username-form label {
+        font-size: 16px;
+      }
+      .join-chat{
+        font-size: 13px;
+        padding: 13px 45px;
+        background-color: #0b1d51;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s ease;
+        font-weight: 500;
+      }
+      .join-chat:hover{
+        background-color: white;
+        color: #1b202d;
+        font-family: "Inter";
+      }
+      /* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #222022 #ffffff;
+  }
+
+    /* Chrome, Edge, and Safari */
+    *::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    *::-webkit-scrollbar-track {
+      background: #ffffff;
+    }
+
+    *::-webkit-scrollbar-thumb {
+      background-color: #222022;
+      border-radius: 3px;
+      border: 2px solid #ffffff;
+    }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js" integrity="sha512-8ExARjWWkIllMlNzVg7JKq9RKWPlJABQUNq6YvAjE/HobctjH/NA+bSiDMDvouBVjp4Wwnf1VP1OEv7Zgjtuxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"
+      integrity="sha512-8ExARjWWkIllMlNzVg7JKq9RKWPlJABQUNq6YvAjE/HobctjH/NA+bSiDMDvouBVjp4Wwnf1VP1OEv7Zgjtuxw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script defer src="script.js"></script>
   </head>
   <body>
+    <div id="username-modal">
+      <form id="username-form">
+        <label for="modal-username-input">Enter user name:</label>
+        <input id="modal-username-input" type="text" required autofocus />
+        <button type="submit" class="join-chat">Join Chat</button>
+      </form>
+    </div>
+
     <div id="message-container"></div>
 
-    <form id="form">
-      <label for="message-input">Message</label>
+    <form id="searchForm">
       <input
         type="text"
         id="message-input"
         placeholder="Type your message..."
       />
       <button type="submit" id="send-button">Send</button>
-
-      <label for="room-input">Room</label>
-      <input type="text" id="room-input" placeholder="Enter room name..." />
-      <button type="button" id="room-button">Join</button>
     </form>
   </body>
 </html>

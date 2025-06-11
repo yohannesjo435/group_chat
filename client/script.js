@@ -1,11 +1,29 @@
-const joinRoomButton = document.getElementById("room-button")
+let username = "Anonymous"
+
+const usernameModal = document.getElementById("username-modal")
+const usernameForm = document.getElementById("username-form")
+const modalusernameInput = document.getElementById("modal-username-input")
+
 const messageInput = document.getElementById("message-input")
-const roomInput = document.getElementById("room-input")
-const form = document.getElementById("form")
+const searchForm = document.getElementById("searchForm")
 
 const socket = io("https://groupchat-production-b243.up.railway.app/")
-socket.on("connect", ()=> {
-  displayMessage(`You connected with id: ${socket.id}`)
+
+//when user connects
+// socket.on("connect", ()=> {
+//   socket.emit("send-message", {username, message: `${usernameInput.value || "Anonymous"}  Joined the chat`})
+// })
+
+usernameForm.addEventListener("submit", e => {
+  e.preventDefault()
+  username = modalusernameInput.value || "Anonymous"
+  usernameModal.style.display = "none"
+})
+
+socket.on("old-messages", (oldMessages)=> {
+  oldMessages.forEach((msg)=> {
+    displayMessage(msg)
+  })
 })
 
 socket.on("recieve-message", message => {
@@ -13,27 +31,32 @@ socket.on("recieve-message", message => {
 })
 
 
-form.addEventListener("submit", e => {
+searchForm.addEventListener("submit", e => {
   e.preventDefault()
   const message = messageInput.value
-  const room = roomInput.value
 
   if (message === "") return
-  displayMessage(message)
-  socket.emit(`send-message`, message, room )
+  displayMessage({username, message})
+  socket.emit(`send-message`, {username, message} )
 
-  message.value = ""
+  messageInput.value = ""
 })
  
-joinRoomButton.addEventListener("click", ()=> {
-  const room = roomInput.value 
-  socket.emit("join-room", room, message => {
-    displayMessage(message)
-  })
-})
 
-function displayMessage(message) {
+function displayMessage(msgObj) {
+  console.log(typeof msgObj)
   const div = document.createElement("div")
-  div.textContent = message
-  document.getElementById("message-container").append(div)
+  div.textContent = `${msgObj.username}: ${msgObj.message}`
+
+  if (msgObj.username === username) {
+    div.classList.add("my-message")
+  }else {
+    div.classList.add("other-message")
+  }
+
+  const messageContainer = document.getElementById("message-container")
+  messageContainer.append(div)
+  
+  messageContainer.scrollTop = messageContainer.scrollHeight 
+  
 }
