@@ -16,6 +16,8 @@ io.on("connection", socket => {
     messageDb.push(message)
     io.emit("recieve-message", message)
   })
-
 })
+
+console.log("Server started on port", PORT)
+
 
