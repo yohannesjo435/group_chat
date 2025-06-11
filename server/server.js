@@ -3,7 +3,7 @@ const PORT = process.env.PORT || 3000
 const messageDb = []
 const io = require("socket.io")(PORT, {
   cors: {
-    origin: ["https://group-chat-blush-one.vercel.app/"],
+    origin: ["https://group-chat-blush-one.vercel.app"],
     credentials: true
   }
 })
